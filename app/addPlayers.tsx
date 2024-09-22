@@ -1,11 +1,14 @@
-import { View, Text, Pressable, TextInput, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "@/constants/Colors";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import CustomButton from "@/components/CustomButton";
-import LineUpCell from "@/components/navigation/LineUpCell";
+import LineUpCell from "@/components/LineUpCell";
+import Input from "@/components/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+// import { changeName } from "@/state/players/playersSlice";
 
 interface Player {
   id: string; // or number, depending on your needs
@@ -15,6 +18,9 @@ interface Player {
 const addPlayers = () => {
   const [userInput, setUserInput] = useState<string>("");
   const [players, setPlayers] = useState<Player[]>([]);
+
+  const playersGroup = useSelector((state: RootState) => state.players.players);
+  const dispatch = useDispatch();
 
   const removePLayer = (id: string) => {
     setPlayers((prevPlayers) =>
@@ -34,8 +40,8 @@ const addPlayers = () => {
   };
 
   useEffect(() => {
-    console.log(players);
-  }, [players]);
+    console.log(playersGroup);
+  }, []);
 
   return (
     <SafeAreaView
@@ -52,12 +58,12 @@ const addPlayers = () => {
           onPress={() => router.back()}
         />
       </View>
-      {players.length > 0 ? (
+      {playersGroup.length > 0 ? (
         <ScrollView
           className="mt-4  w-4/5"
           showsVerticalScrollIndicator={false}
         >
-          {players.map((player, index) => (
+          {playersGroup.map((player, index) => (
             <LineUpCell
               key={player.id}
               name={player.name}
@@ -87,17 +93,8 @@ const addPlayers = () => {
           >
             მოთამაშის სახელი
           </Text>
-          <TextInput
-            maxLength={20}
-            value={userInput}
-            onChangeText={(text) => setUserInput(text)}
-            className="  border h-10  rounded-lg tracking-widest text-base text-red-400  "
-            style={{
-              borderColor: "#31c3bd",
-              color: "#31c3bd",
-              textAlign: "center",
-            }}
-          />
+
+          <Input onChangeText={setUserInput} userInput={userInput} />
         </View>
         <CustomButton
           title="დამატება"

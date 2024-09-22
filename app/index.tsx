@@ -4,6 +4,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
 import { router } from "expo-router";
+import WhoIsSpy from "@/components/WhoIsSpy";
 
 const index = () => {
   return (
@@ -11,12 +12,7 @@ const index = () => {
       className=" flex-1 justify-center items-center  "
       style={{ backgroundColor: Colors.bgColor }}
     >
-      <Text
-        className="text-red-500 text-center font-bold uppercase text-5xl mb-24"
-        style={{ fontFamily: "mrgvlovani", color: Colors.yellow }}
-      >
-        ვინ არის ჯაშუში
-      </Text>
+      <WhoIsSpy />
       <View className="mt-52">
         <CustomButton
           onPress={() => router.push("/addPlayers")}

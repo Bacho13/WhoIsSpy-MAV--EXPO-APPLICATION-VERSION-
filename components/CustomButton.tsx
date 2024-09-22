@@ -2,15 +2,17 @@ import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import Colors from "@/constants/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 
 interface CustomButtonProps {
   onPress: () => void;
   title?: string | undefined;
   color: string;
   colorOnpress: string;
-  iconName?: string | undefined;
-  iconSize: number;
-  iconColor: string;
+  iconName?: any | undefined;
+  iconSize?: number | undefined;
+  iconColor?: string | undefined;
 }
 
 const CustomButton = ({
