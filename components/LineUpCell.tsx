@@ -5,7 +5,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 interface LineUpCellProps {
   onPress: () => void;
   index: number;
-  name: string;
+  name?: string | undefined;
 }
 
 const LineUpCell = ({ onPress, index, name }: LineUpCellProps) => {

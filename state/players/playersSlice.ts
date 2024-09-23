@@ -1,33 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Player {
-  id: string;
-  name: string;
+  id?: string | undefined;
+  name?: string || "new [layer";
 }
 
-interface PlayersState {
+interface GroupOfPlayersInterface {
   players: Player[];
 }
 
-const initialState: PlayersState = {
+const GroupOfPlayers: GroupOfPlayersInterface = {
   players: [
-    { id: "1", name: "mari" }, // Example initial player
-    { id: "2", name: "bacho" }, // Example initial player
+    { id: "120413", name: "Bacho" }, // Example initial player
+    { id: "120796", name: "Mari" },
   ],
 };
 
 const playersSlice = createSlice({
-  name: "players",
-  initialState,
+  name: "GroupOfPlayers",
+  initialState: GroupOfPlayers,
   reducers: {
     removePlayer: (state, action: PayloadAction<string>) => {
       state.players = state.players.filter(
         (player) => player.id !== action.payload
       );
     },
+    addPlayer: (state, action: PayloadAction<Player>) => {
+      state.players.push(action.payload);
+    },
   },
 });
 
-export const { removePlayer } = playersSlice.actions;
+export const { removePlayer, addPlayer } = playersSlice.actions;
 
 export default playersSlice.reducer;

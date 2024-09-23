@@ -8,40 +8,37 @@ import LineUpCell from "@/components/LineUpCell";
 import Input from "@/components/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import { removePlayer, addPlayer } from "@/state/players/playersSlice";
 // import { changeName } from "@/state/players/playersSlice";
 
 interface Player {
-  id: string; // or number, depending on your needs
-  name: string;
+  id?: string | undefined; // or number, depending on your needs
+  name?: string | undefined;
 }
 
 const addPlayers = () => {
   const [userInput, setUserInput] = useState<string>("");
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [player, setPlayer] = useState<Player[]>([]);
 
   const playersGroup = useSelector((state: RootState) => state.players.players);
   const dispatch = useDispatch();
 
   const removePLayer = (id: string) => {
-    setPlayers((prevPlayers) =>
-      prevPlayers.filter((player) => player.id !== id)
-    );
+    dispatch(removePlayer(id));
   };
 
-  const addPlayers = () => {
-    if (userInput?.trim() !== "") {
-      const newPlayer: Player = {
-        id: Date.now().toString(),
-        name: userInput,
-      };
-      setPlayers((prevPlayers) => [...prevPlayers, newPlayer]);
-      setUserInput("");
-    }
+  const addPlayer = () => {
+    const newPlayer = {
+      id: Date.now().toString(),
+      name: userInput,
+    };
+    dispatch(addPlayer(newPlayer));
   };
 
   useEffect(() => {
-    console.log(playersGroup);
-  }, []);
+    console.log(userInput);
+    console.log(player);
+  }, [userInput]);
 
   return (
     <SafeAreaView
@@ -100,7 +97,7 @@ const addPlayers = () => {
           title="დამატება"
           color={Colors.yellow}
           colorOnpress={Colors.lightYellow}
-          onPress={addPlayers}
+          onPress={addPlayer}
         />
       </View>
     </SafeAreaView>
