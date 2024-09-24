@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Player {
-  id?: string | undefined;
-  name?: string || "new [layer";
+  id?: string;
+  name?: string;
 }
 
 interface GroupOfPlayersInterface {
@@ -10,10 +10,7 @@ interface GroupOfPlayersInterface {
 }
 
 const GroupOfPlayers: GroupOfPlayersInterface = {
-  players: [
-    { id: "120413", name: "Bacho" }, // Example initial player
-    { id: "120796", name: "Mari" },
-  ],
+  players: [],
 };
 
 const playersSlice = createSlice({

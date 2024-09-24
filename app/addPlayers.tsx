@@ -1,33 +1,29 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, ScrollView } from "react-native";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "@/constants/Colors";
 import { router } from "expo-router";
 import CustomButton from "@/components/CustomButton";
 import LineUpCell from "@/components/LineUpCell";
-import Input from "@/components/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { removePlayer, addPlayer } from "@/state/players/playersSlice";
+import RedText from "@/components/RedText";
+import Input from "@/components/Input";
+import WhiteTextHeader from "@/components/WhiteTextHeader";
 // import { changeName } from "@/state/players/playersSlice";
 
 interface Player {
-  id?: string | undefined; // or number, depending on your needs
-  name?: string | undefined;
+  id: string; // or number, depending on your needs
+  name: string;
 }
 
 const addPlayers = () => {
   const [userInput, setUserInput] = useState<string>("");
-  const [player, setPlayer] = useState<Player[]>([]);
-
   const playersGroup = useSelector((state: RootState) => state.players.players);
   const dispatch = useDispatch();
 
-  const removePLayer = (id: string) => {
-    dispatch(removePlayer(id));
-  };
-
-  const addPlayer = () => {
+  const handleAddPlayer = () => {
     const newPlayer = {
       id: Date.now().toString(),
       name: userInput,
@@ -35,17 +31,12 @@ const addPlayers = () => {
     dispatch(addPlayer(newPlayer));
   };
 
-  useEffect(() => {
-    console.log(userInput);
-    console.log(player);
-  }, [userInput]);
-
   return (
     <SafeAreaView
       className="flex-1 justify-between items-center  "
       style={{ backgroundColor: Colors.bgColor }}
     >
-      <View className="w-12 self-start ml-3 mt-2">
+      <View className=" h-20 w-12 self-start ml-3 mt-2">
         <CustomButton
           color={Colors.lightGray}
           colorOnpress={Colors.gray}
@@ -56,52 +47,76 @@ const addPlayers = () => {
         />
       </View>
       {playersGroup.length > 0 ? (
-        <ScrollView
-          className="mt-4  w-4/5"
-          showsVerticalScrollIndicator={false}
-        >
-          {playersGroup.map((player, index) => (
-            <LineUpCell
-              key={player.id}
-              name={player.name}
-              index={index + 1}
-              onPress={() => {
-                removePLayer(player.id);
-              }}
-            />
-          ))}
-        </ScrollView>
+        <Scrol />
       ) : (
-        <View className="w-64 text-center items-center ">
-          <Text
-            style={{ color: Colors.red }}
-            className="text-lg tracking-widest uppercase  text-center"
-          >
-            უნდა იყოს მინიმუმ 3 და მაქსიმუმ 10 მოთამაშე
-          </Text>
-        </View>
+        <RedText text="უნდა იყოს მინიმუმ 3 და მაქსიმუმ 10 მოთამაშე" />
       )}
 
       <View className="w-4/5 h-64 justify-between mb-5 ">
         <View>
-          <Text
-            className="uppercase text-lg  mb-2"
-            style={{ color: Colors.lightGray }}
-          >
-            მოთამაშის სახელი
-          </Text>
-
+          <WhiteTextHeader text="მოთამაშის სახელი" />
           <Input onChangeText={setUserInput} userInput={userInput} />
         </View>
-        <CustomButton
-          title="დამატება"
-          color={Colors.yellow}
-          colorOnpress={Colors.lightYellow}
-          onPress={addPlayer}
-        />
+        {playersGroup.length > 2 && (
+          <CustomButton
+            title="თამაშის დაწყება"
+            color={Colors.blue}
+            colorOnpress={Colors.lightBlue}
+          />
+        )}
+        {playersGroup.length < 10 && (
+          <CustomButton
+            title="დამატება"
+            color={Colors.yellow}
+            colorOnpress={Colors.lightYellow}
+            onPress={handleAddPlayer}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
 };
 
 export default addPlayers;
+
+const Scrol = () => {
+  const playersGroup = useSelector((state: RootState) => state.players.players);
+  const dispatch = useDispatch();
+  const scrollViewRef = useRef<ScrollView>(null); // Ref for ScrollView
+
+  const handleRemovePlayer = (id: string) => {
+    dispatch(removePlayer(id));
+    console.log("clicked to remove");
+  };
+
+  // Scroll to the bottom of the list after adding the new player
+  setTimeout(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }
+  }, 100); // small delay to ensure rendering
+  return (
+    <ScrollView
+      ref={scrollViewRef}
+      className="mt-4  w-4/5"
+      showsVerticalScrollIndicator={false}
+    >
+      {playersGroup.map((player, index) => (
+        <LineUpCell
+          key={player.id}
+          name={player.name}
+          index={index + 1}
+          onPress={() => {
+            if (player.id) {
+              // Check if player.id is defined
+
+              handleRemovePlayer(player.id);
+            } else {
+              console.error("Player ID is undefined");
+            }
+          }}
+        />
+      ))}
+    </ScrollView>
+  );
+};

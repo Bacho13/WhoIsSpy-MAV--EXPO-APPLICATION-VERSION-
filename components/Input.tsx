@@ -1,5 +1,7 @@
 import { View, Text, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 
 interface InputProps {
   onChangeText: (arg0: any) => void;
@@ -8,6 +10,7 @@ interface InputProps {
 
 const Input = ({ onChangeText }: InputProps) => {
   const [userInput, setUserInput] = useState<string>("");
+  const playersGroup = useSelector((state: RootState) => state.players.players);
 
   const [internalInput, setInternalInput] = useState<string>("");
 
@@ -15,6 +18,10 @@ const Input = ({ onChangeText }: InputProps) => {
     setInternalInput(text); // Update internal state
     onChangeText(text); // Call the parent function
   };
+
+  useEffect(() => {
+    setInternalInput("");
+  }, [playersGroup]);
 
   return (
     <View>

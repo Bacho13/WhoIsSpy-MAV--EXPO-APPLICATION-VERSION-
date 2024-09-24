@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 
 interface CustomButtonProps {
-  onPress: () => void;
+  onPress?: () => void | undefined;
   title?: string | undefined;
   color: string;
   colorOnpress: string;
@@ -36,7 +36,7 @@ const CustomButton = ({
         onPressIn={() => {
           setPressed(true);
         }}
-        className="rounded-xl"
+        className="rounded-xl "
         style={{ backgroundColor: pressed ? `${colorOnpress}` : `${color}` }}
       >
         {title && (
