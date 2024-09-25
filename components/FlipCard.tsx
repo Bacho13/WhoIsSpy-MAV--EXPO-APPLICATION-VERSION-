@@ -1,7 +1,6 @@
 import Colors from "@/constants/Colors";
-import React from "react";
+import React, { useState } from "react";
 import {
-  Pressable,
   SafeAreaView,
   View,
   StyleSheet,
@@ -14,6 +13,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import CustomButton from "./CustomButton";
 
 const image = require("../assets/imgs/background.webp");
 
@@ -32,8 +32,8 @@ const RegularContent = () => {
         }}
       >
         <Text
-          style={{ fontFamily: "mrgvlovani" }}
-          className=" text-slate-200  text-justify leading-loose text-4xl  bg-orange-600 uppercase "
+          style={{ fontFamily: "mrgvlovani", lineHeight: 65 }}
+          className=" text-slate-200  text-justify  text-4xl   uppercase "
         >
           მარი
         </Text>
@@ -44,6 +44,7 @@ const RegularContent = () => {
 
 const regularContentStyles = StyleSheet.create({
   card: {
+    fontFamily: "mrgvlovani",
     flex: 1,
     backgroundColor: "#b6cff7",
     borderRadius: 16,
@@ -58,7 +59,10 @@ const regularContentStyles = StyleSheet.create({
 const FlippedContent = () => {
   return (
     <View style={[flippedContentStyles.card, { fontFamily: "mrgvlovani" }]}>
-      <Text className=" font-bold text-slate-200 text-center bold text-5xl uppercase ">
+      <Text
+        style={{ lineHeight: 70 }}
+        className=" font-bold line text-slate-200 text-center bold text-5xl uppercase "
+      >
         ღუმელი
       </Text>
     </View>
@@ -147,9 +151,11 @@ const flipCardStyles = StyleSheet.create({
 
 export default function flipCard() {
   const isFlipped = useSharedValue(false);
+  const [shown, setShown] = useState<boolean>(false);
 
   const handlePress = () => {
     isFlipped.value = !isFlipped.value;
+    setShown(!shown);
   };
 
   return (
@@ -160,10 +166,22 @@ export default function flipCard() {
         FlippedContent={<FlippedContent />}
         RegularContent={<RegularContent />}
       />
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.toggleButton} onPress={handlePress}>
-          <Text style={styles.toggleButtonText}>machvene</Text>
-        </Pressable>
+      <View className="mt-20">
+        {shown ? (
+          <CustomButton
+            title={"დახურე"}
+            color={Colors.red}
+            colorOnpress={Colors.red}
+            onPress={handlePress}
+          />
+        ) : (
+          <CustomButton
+            title={"მაჩვენე"}
+            color={Colors.blue}
+            colorOnpress={Colors.lightBlue}
+            onPress={handlePress}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -172,15 +190,10 @@ export default function flipCard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 300,
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonContainer: {
-    marginTop: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+
   toggleButton: {
     backgroundColor: "#b58df1",
     padding: 12,
