@@ -23,6 +23,7 @@ const _layout = () => {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="addPlayers" options={{ headerShown: false }} />
+        <Stack.Screen name="gamePage" options={{ headerShown: false }} />
       </Stack>
     </Provider>
   );

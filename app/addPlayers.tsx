@@ -11,6 +11,7 @@ import { removePlayer, addPlayer } from "@/state/players/playersSlice";
 import RedText from "@/components/RedText";
 import Input from "@/components/Input";
 import WhiteTextHeader from "@/components/WhiteTextHeader";
+
 // import { changeName } from "@/state/players/playersSlice";
 
 interface Player {
@@ -24,11 +25,14 @@ const addPlayers = () => {
   const dispatch = useDispatch();
 
   const handleAddPlayer = () => {
-    const newPlayer = {
-      id: Date.now().toString(),
-      name: userInput,
-    };
-    dispatch(addPlayer(newPlayer));
+    if (userInput !== "") {
+      const newPlayer = {
+        id: Date.now().toString(),
+        name: userInput,
+      };
+      dispatch(addPlayer(newPlayer));
+    }
+    setUserInput("");
   };
 
   return (
@@ -36,7 +40,7 @@ const addPlayers = () => {
       className="flex-1 justify-between items-center  "
       style={{ backgroundColor: Colors.bgColor }}
     >
-      <View className=" h-20 w-12 self-start ml-3 mt-2">
+      <View className=" self-start h-20 w-12  ml-3 mt-2">
         <CustomButton
           color={Colors.lightGray}
           colorOnpress={Colors.gray}
@@ -62,6 +66,9 @@ const addPlayers = () => {
             title="თამაშის დაწყება"
             color={Colors.blue}
             colorOnpress={Colors.lightBlue}
+            onPress={() => {
+              router.push("/gamePage");
+            }}
           />
         )}
         {playersGroup.length < 10 && (
