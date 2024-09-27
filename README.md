@@ -1,3 +1,4 @@
+(Under Construction)
 React Native - EXPO  APP Game Who Is Spy
 
 Expo - React Native/ Redux Toolkit / NativeWinde / React Native Reanimated
@@ -34,8 +35,4 @@ During this time, players take turns asking each other questions, and they must 
 <br>
 <br>
 
-
-Live - https://who-is-spy.vercel.app/ 
-<br>
-<br>
 
